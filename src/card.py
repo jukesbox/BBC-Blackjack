@@ -31,6 +31,9 @@ class Card:
         self.set_ascii_art()
 
     def __str__(self):
+        """
+        String representation of the class, useful for printing.
+        """
         return f"{self._rank} of {self._suit}"
     
     def set_name(self):
@@ -41,6 +44,9 @@ class Card:
 
     ### TODO: once CardImages is implemented
     def set_ascii_art(self):
+        """
+        Gets the relevant ASCII art for the card
+        """
         pass
 
     def get_name(self):
@@ -55,6 +61,12 @@ class Card:
         return None
     
     def get_card_value(self):
+        """Returns the value of the card - 10 for face cards, 
+        11 for Ace, the number on the card otherwise
+
+        Returns:
+            int: the card value
+        """
         if self._rank in ["Jack", "Queen", "King"]:
             return 10
         elif self._rank == "Ace":

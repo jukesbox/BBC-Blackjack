@@ -13,3 +13,7 @@ class CardImagesTestCase(unittest.TestCase):
     
     def tearDown(self):
         pass
+
+    def test_get_image_by_name(self):
+        pass
+    
