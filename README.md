@@ -28,3 +28,8 @@ Python Implementation was mostly from my own previous knowledge, however supplem
 specific functionalities listed below was conducted from the following sources:
 ____
 _____
+
+# Author
+
+Jamie Jukes
+University of Warwick
