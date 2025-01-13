@@ -10,8 +10,8 @@ import unittest
 
 class PlayerTestCase(unittest.TestCase):
     def setUp(self):
-        self.player = Player()
-        self.deck = Deck()
+        self.player = Player("Jamie", 10)
+        self.deck = Deck(1)
         pass
     
     def tearDown(self):
@@ -48,7 +48,7 @@ class PlayerTestCase(unittest.TestCase):
         Then I receive no further cards
         And my score is evaluated
         """
-        previous_hand = self.get_hand()
+        previous_hand = self.player.get_hand()
         self.player.stand()
         self.assertEqual(previous_hand, self.player.get_hand())
 

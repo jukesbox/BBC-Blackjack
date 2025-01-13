@@ -5,39 +5,84 @@ Include getter/setters
 
 from src.display import Display
 import unittest
+from unittest.mock import patch
 
 class DisplayTestCase(unittest.TestCase):
     def setUp(self):
+        self.display = Display()
         pass
     
     def tearDown(self):
         pass
 
-    def test_get_entered_num_players(self):
+    @patch("src.display.Display.get_number_input", side_effect=["1"])
+    def test_get_entered_num_players(self, mock_input):
         """
         Given I enter a valid number of players, that number is returned.
         """
-        pass
+        num_players = self.display.get_entered_num_players()
+        self.assertEqual(num_players, 1)
 
-    def test_get_entered_players_invalid(self):
+    @patch("src.display.Display.get_number_input", side_effect=["-1", "0", "TotallyANumber", "8", "3"])
+    def test_get_entered_players_invalid(self, mock_inputs):
         """
         Given I enter invalid response(s), the accepted
         value is the first acceptable response that I enter.
         """
+        num_players = self.display.get_entered_num_players()
+        # the first valid input is 3
+        self.assertEqual(num_players, 3)
+
+    @patch("src.display.input", return_value="Jamie J")
+    def test_get_player_name(self, mock_input):
+        """
+        Given I enter a name when prompted, that name is returned
+        """
+        player_name = self.display.get_player_name()
+        self.assertEqual(player_name, "Jamie J")
+
+    @patch("src.display.input", return_value="")
+    def test_get_player_name_empty(self, mock_input):
+        """
+        Given I do not enter anything for the player's name, it is set to "Player"
+        """
+        player_name = self.display.get_player_name()
+        self.assertEqual(player_name, "Player")
         pass
 
-    def test_get_entered_num_packs(self):
+    @patch("src.display.input", return_value="10")
+    def test_get_player_bet(self, mock_input):
+        """
+        Given I enter a valid bet (a positive integer), that value is returned.
+        """
+        player_bet = self.display.get_player_bet()
+        self.assertEqual(player_bet, 10)
+
+    @patch("src.display.input", side_effect=["BBC", "0", "5"])
+    def test_get_bet_invaid(self, mock_inputs):
+        """
+        Given I enter invalid response(s), the accepted
+        value is the first acceptable response that I enter.
+        """
+        player_bet = self.display.get_player_bet()
+        self.assertEqual(player_bet, 5)
+
+    @patch("src.display.input", return_value="2")
+    def test_get_entered_num_packs(self, mock_input):
         """
         Given I enter a valid number of packs, that number is returned.
         """
-        pass
+        num_packs = self.display.get_entered_num_packs()
+        self.assertEqual(num_packs, 2)
 
-    def test_get_entered_packs_invalid(self):
+    @patch("src.display.input", side_effect=["8", "0", "3"])
+    def test_get_entered_packs_invalid(self, mock_inputs):
         """
         Given I enter invalid response(s), the accepted
         value is the first acceptable response that I enter.
         """
-        pass
+        num_packs = self.display.get_entered_num_packs()
+        self.assertEqual(num_packs, 3)
 
     def test_show_single_player_cards(self):
         """
@@ -51,13 +96,16 @@ class DisplayTestCase(unittest.TestCase):
         """
         pass
 
-    def test_make_play_choice(self):
+    @patch("src.display.input", return_value="h")
+    def test_make_play_choice(self, mock_input):
         """
         Given I enter 'h', 's' or 'd'...
+        The choice that was made is returned
         """
         pass
 
-    def test_make_play_choice_invalid(self):
+    @patch("src.display.input", side_effect=["developer", " ", "s"])
+    def test_make_play_choice_invalid(self, mock_inputs):
         """
         Given I enter invalid response(s), the accepted
         value is the first acceptable response that I enter.

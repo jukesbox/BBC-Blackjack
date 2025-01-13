@@ -11,7 +11,7 @@ class Player:
         self._hand = []
         self._standing = False
     
-    def set_hand(self):
+    def set_hand(self, hand):
         pass
     
     def opening_hand(self):
