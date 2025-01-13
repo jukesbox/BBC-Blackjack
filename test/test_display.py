@@ -14,6 +14,9 @@ class DisplayTestCase(unittest.TestCase):
         pass
 
     def test_get_entered_num_players(self):
+        """
+        Given I enter a valid number of players, that number is returned.
+        """
         pass
 
     def test_get_entered_players_invalid(self):
@@ -24,6 +27,9 @@ class DisplayTestCase(unittest.TestCase):
         pass
 
     def test_get_entered_num_packs(self):
+        """
+        Given I enter a valid number of packs, that number is returned.
+        """
         pass
 
     def test_get_entered_packs_invalid(self):
@@ -34,14 +40,20 @@ class DisplayTestCase(unittest.TestCase):
         pass
 
     def test_show_single_player_cards(self):
+        """
+        The player's cards can be shown in ascii art format.
+        """
         pass
 
     def test_show_all_players_cards(self):
+        """
+        The cards of all players can be shown in ascii format.
+        """
         pass
 
     def test_make_play_choice(self):
         """
-        Given I enter 'h', 's' or 'd'
+        Given I enter 'h', 's' or 'd'...
         """
         pass
 
