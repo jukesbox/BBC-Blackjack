@@ -74,6 +74,12 @@ class Player:
     def double_bet(self):
         self._bet *= 2
 
+    def player_wins(self, dealer_score):
+        if not self.is_bust():
+            if self._hand_total > dealer_score:
+                return True
+        return False
+
 
 
 

@@ -6,8 +6,12 @@ Encapsulation is used throughout - mainly to avoid modification of instance vari
 accidentally outside of the class.
 
 """
+from src.card_images import CardImages
+
 SUITS = ["Diamonds", "Clubs", "Spades", "Hearts"]
 RANKS = ["Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"]
+
+ascii_art = CardImages()
 
 class Card:
     def __init__(self, rank, suit):
@@ -47,7 +51,7 @@ class Card:
         """
         Gets the relevant ASCII art for the card
         """
-        pass
+        self._ascii_art = ascii_art.get_image_by_name(self._rank + "_of_" + self._suit)
 
     def get_name(self):
         return self._name

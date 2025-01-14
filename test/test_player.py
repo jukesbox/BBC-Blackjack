@@ -156,3 +156,34 @@ class PlayerTestCase(unittest.TestCase):
         previous_cards = self.player.get_hand()
         self.player.hit(self.deck)
         self.assertEqual(previous_cards, self.player.get_hand())
+
+    def test_player_wins_bust(self):
+        """
+        Given I have an invalid hand, I do not win at the end of the game.
+        """
+        self.player.set_hand([Card("10", "Diamonds"), 
+                              Card("10", "Spades"), 
+                              Card("3", "Hearts")])
+        self.assertEqual(self.player.player_wins(20), False)
+
+
+    def test_player_wins_false(self):
+        """
+        Given I have a valid hand, but the dealer's score is higher than mine, 
+        I do not win at the end of the game.
+
+        """
+        self.player.set_hand([Card("10", "Diamonds"), 
+                              Card("7", "Spades"), 
+                              Card("2", "Hearts")])
+        self.assertEqual(self.player.player_wins(20), False)
+
+    def test_player_wins_true(self):
+        """
+        Given I have a valid hand and my score is higher than (*or equal to)
+        the dealer's score, I win at the end of the game.
+        """
+        self.player.set_hand([Card("10", "Diamonds"), 
+                              Card("7", "Spades"), 
+                              Card("2", "Hearts")])
+        self.assertEqual(self.player.player_wins(18), True)
