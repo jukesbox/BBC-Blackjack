@@ -12,6 +12,10 @@ class Player:
         self._hand_total = 0
         self._standing = False
     
+    def is_standing(self):
+        return self._standing
+
+
     def set_hand(self, hand):
         self._hand = hand
     
@@ -50,6 +54,24 @@ class Player:
                 hand_total += 1
         self._hand_total = hand_total
         return self._hand_total
+    
+    def get_hand_ascii(self):
+        # for all but one card, get the ascii representation
+        ascii_by_card = []
+        for x in range(self.get_num_cards() - 1):
+            ascii_by_card.append(self._hand[x].get_partial_ascii_art())
+        ascii_by_card.append(self._hand[self.get_num_cards() - 1].get_ascii_art())
+        # ascii_by_card contains each individual card's ascii art
+        # rearrange to be by line...
+        all_lines = []
+        for y in range(8):
+            this_line = ""
+            for card in ascii_by_card:
+                this_line += card[y]
+            all_lines.append(this_line)
+        return all_lines
+
+
 
     def get_bet(self):
         return self._bet
@@ -87,4 +109,23 @@ class Player:
 
 class Dealer(Player):
     def __init__(self):
-        super().__init__(self)
+        super().__init__("Dealer", 0)
+        self._revealed_hand = []
+
+    def opening_hand(self, deck):
+        super().opening_hand(deck)
+        self._revealed_hand.append(self._hand[0])
+
+    def get_partial_hand(self):
+        return self._revealed_hand
+    
+    def get_hand(self):
+        return self._hand
+
+    
+    def show_revealed_hand(self):
+        return self._revealed_hand[0].get_ascii_art()
+
+    def take_turn(self, deck):
+        if self.get_hand_total() < 17:
+            self.hit(deck)

@@ -52,6 +52,8 @@ class Card:
         Gets the relevant ASCII art for the card
         """
         self._ascii_art = ascii_art.get_image_by_name(self._rank + "_of_" + self._suit)
+        self._partial_ascii_art = ascii_art.get_partial_image_by_name(self._rank + "_of_" + self._suit)
+
 
     def get_name(self):
         return self._name
@@ -65,6 +67,11 @@ class Card:
     def get_ascii_art(self):
         if self._ascii_art:
             return self._ascii_art
+        return None
+    
+    def get_partial_ascii_art(self):
+        if self._partial_ascii_art:
+            return self._partial_ascii_art
         return None
     
     def get_card_value(self):
