@@ -25,7 +25,7 @@ class PlayerTestCase(unittest.TestCase):
         When I am dealt my opening hand
         Then I have two cards
         """
-        self.player.opening_hand()
+        self.player.opening_hand(self.deck)
         self.assertEqual(self.player.get_num_cards(), 2)
 
     def test_hit(self):
@@ -37,7 +37,7 @@ class PlayerTestCase(unittest.TestCase):
         And my score is updated
         """
         previous_total = self.player.get_hand_total()
-        self.player.hit()
+        self.player.hit(self.deck)
         self.assertGreater(self.player.get_hand_total(), previous_total)
 
     def test_stand(self):
@@ -58,7 +58,7 @@ class PlayerTestCase(unittest.TestCase):
         to double down, my bet is doubled.
         """
         previous_bet = self.player.get_bet()
-        self.player.double_down()
+        self.player.double_down(self.deck)
         self.assertEqual(previous_bet*2, self.player.get_bet())
 
     def test_double_down_cards(self):
@@ -67,7 +67,7 @@ class PlayerTestCase(unittest.TestCase):
         double down, I am given one additional card.
         """
         num_cards = self.player.get_num_cards()
-        self.player.double_down()
+        self.player.double_down(self.deck)
         self.assertEqual(num_cards+1, self.player.get_num_cards())
 
         
@@ -76,9 +76,9 @@ class PlayerTestCase(unittest.TestCase):
         Given my score is valid and I choose to double
         down, I cannot take another card after this.
         """    
-        self.player.double_down()
+        self.player.double_down(self.deck)
         num_cards = self.player.get_num_cards()
-        self.player.hit()
+        self.player.hit(self.deck)
         self.assertEqual(num_cards, self.player.get_num_cards())
 
 
@@ -92,7 +92,7 @@ class PlayerTestCase(unittest.TestCase):
         # score is automatically updated within this method
         self.player.set_hand([Card("King", "Diamonds"), 
                               Card("8", "Hearts")])
-        self.assertEqual(self.player.is_bust(), True)
+        self.assertEqual(self.player.is_bust(), False)
         
 
     def test_score_over_21(self):    
@@ -154,5 +154,5 @@ class PlayerTestCase(unittest.TestCase):
         """
         self.player.stand()
         previous_cards = self.player.get_hand()
-        self.player.hit()
+        self.player.hit(self.deck)
         self.assertEqual(previous_cards, self.player.get_hand())

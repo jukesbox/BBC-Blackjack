@@ -15,7 +15,7 @@ class DisplayTestCase(unittest.TestCase):
     def tearDown(self):
         pass
 
-    @patch("src.display.Display.get_number_input", side_effect=["1"])
+    @patch("src.display.input", side_effect=["1"])
     def test_get_entered_num_players(self, mock_input):
         """
         Given I enter a valid number of players, that number is returned.
@@ -23,7 +23,7 @@ class DisplayTestCase(unittest.TestCase):
         num_players = self.display.get_entered_num_players()
         self.assertEqual(num_players, 1)
 
-    @patch("src.display.Display.get_number_input", side_effect=["-1", "0", "TotallyANumber", "8", "3"])
+    @patch("src.display.input", side_effect=["-1", "0", "TotallyANumber", "8", "3"])
     def test_get_entered_players_invalid(self, mock_inputs):
         """
         Given I enter invalid response(s), the accepted

@@ -32,12 +32,12 @@ class Display:
                     invalid = False
                 else:
                     print("Invalid option - please enter a number between "
-                        + str(min) + "and" + str(max))
+                        + str(min) + " and " + str(max))
             except Exception as e:
                 print("Invalid option - please enter a number between "
                         + str(min) + " and " + str(max))
 
-        return number
+        return int(number)
 
     # get num players
     def get_entered_num_players(self):

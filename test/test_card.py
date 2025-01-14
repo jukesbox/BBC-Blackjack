@@ -52,6 +52,14 @@ class CardTestCase(unittest.TestCase):
         self.assertEqual(self.card.get_name(), "4 of Hearts")
         pass
 
+    def test_get_rank(self):
+        """
+        Given a card is instantiated, it has the correct name property
+        """
+        self.card = Card("4", "Hearts")
+        self.assertEqual(self.card.get_rank(), "4")
+        pass
+
     def test_get_suit(self):
         """
         Given a card is instantiated, it has the correct suit property.
