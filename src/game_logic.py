@@ -13,6 +13,7 @@ class GameLogic:
         self._deck = Deck(num_packs)
         self._num_players = len(self._players)
         self._current_player = 0
+        self._game_done = False
         self.end_turn = False
 
     def opening_hands(self):
@@ -125,7 +126,8 @@ class GameLogic:
         Returns:
             bool: The dealer has finished drawing cards.
         """
-        return (self._dealer.get_hand_total() > 17)
+        self._game_is_done =  (self._dealer.get_hand_total() > 16)
+        return self._game_is_done
 
     
     def player_choice(self, choice):
@@ -156,6 +158,19 @@ class GameLogic:
         elif self.get_current_player().is_standing():
             return "STANDING"
         return "PLAYING"
+    
+
+    def get_current_player_name(self):
+        return self.get_current_player().get_name()
+
+    def get_current_player_total(self):
+        return self.get_current_player().get_hand_total()
+
+    def get_current_player_bet(self):
+        return self.get_current_player().get_bet()
+    
+    def get_current_player_ascii(self):
+        return self.get_current_player().get_hand_ascii()
         
     
     # the display should never interact directly with the player instances,
@@ -186,6 +201,12 @@ class GameLogic:
         """
         self.get_current_player().double_down(self._deck)
         self.set_turn_end()
+
+    def is_bust_dealer(self):
+        """
+        Returns True if dealer score > 21, else returns False
+        """
+        return self._dealer.is_bust()
 
     def set_turn_end(self):
         """

@@ -3,6 +3,8 @@ The Player and Dealer class will be defined in this file.
 The Dealer is a subclass of Player, as it shares some functionality but has additional restrictions (such as having a minimum hand value)
 
 """
+from colorama import Fore, Back
+DEFAULT_COLOUR = Fore.WHITE + Back.BLACK
 
 class Player:
     def __init__(self, name, bet):
@@ -59,8 +61,8 @@ class Player:
         # for all but one card, get the ascii representation
         ascii_by_card = []
         for x in range(self.get_num_cards() - 1):
-            ascii_by_card.append(self._hand[x].get_partial_ascii_art())
-        ascii_by_card.append(self._hand[self.get_num_cards() - 1].get_ascii_art())
+            ascii_by_card.append(self._hand[x].get_ascii_partial_colourised())
+        ascii_by_card.append(self._hand[self.get_num_cards() - 1].get_ascii_art_colourised())
         # ascii_by_card contains each individual card's ascii art
         # rearrange to be by line...
         all_lines = []
@@ -122,9 +124,8 @@ class Dealer(Player):
     def get_hand(self):
         return self._hand
 
-    
     def show_revealed_hand(self):
-        return self._revealed_hand[0].get_ascii_art()
+        return self._revealed_hand[0].get_ascii_art_colourised()
 
     def take_turn(self, deck):
         if self.get_hand_total() < 17:

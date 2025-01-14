@@ -82,6 +82,9 @@ class CardImages:
         return self.split_lines(ace_lines)
     
     def get_all_cards(self):
+        """
+        Add all of the cards in the lists to the dictionaries.
+        """
         self.get_not_aces()
         self.get_aces()
 

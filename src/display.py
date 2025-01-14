@@ -14,45 +14,50 @@ class Display:
     def __init__(self):
         self.display_text_art()
         self.pause()
-        self.num_players = self.get_entered_num_players()
-        self.num_packs = self.get_entered_num_packs()
-        self.all_players = self.create_players()
-        self.game = GameLogic(self.all_players, self.num_packs)
+        self._num_players = self.get_entered_num_players()
+        self._num_packs = self.get_entered_num_packs()
+        self._all_players = self.create_players()
+        self._game = GameLogic(self._all_players, self._num_packs)
         pass
 
+    def get_game(self):
+        return self._game
+    
     def begin_game(self):
-        self.game.opening_hands()
-        for player in self.game.get_players():
+        self._game.opening_hands()
+        for player in self._game.get_players():
             print(player.get_name() + "'s opening hand:")
             hand = player.get_hand_ascii()
             print('\n'.join(hand))
             self.pause()
-        print("Dealer's opening_hand:")
-        dealer_hand = self.game.get_dealer_revealed_ascii()
+        print("Dealer's opening hand:")
+        dealer_hand = self._game.get_dealer_revealed_ascii()
         print('\n'.join(dealer_hand))
+        self.pause()
 
         self.make_play_choice()
-        while not self.game.game_done():
+        while not self._game.game_done():
             self.dealer_turn()
 
         print("Dealer final hand:")
-        dealer_hand = self.game.get_dealer_full_hand_ascii()
+        dealer_hand = self._game.get_dealer_full_hand_ascii()
         print('\n'.join(dealer_hand))
 
-        print("Winners:")
-        for player in self.game.get_players():
-            if player.player_wins(self.game.get_dealer_total()):
-                # assume return on bet is *2 if wins
-                print(player.get_name() + " wins, recieves: " + player.get_bet()*2)
+        print("############## GAME ENDED #################")
+        for player in self._game.get_players():
+            if not self._game.is_bust_dealer():
+                dealer_total = self._game.get_dealer_total()
+            else:
+                dealer_total = 0
+
+            if player.player_wins(dealer_total):
+                print(player.get_name() + " wins, recieves "+ str(player.get_bet()*2))
             else:
                 print(player.get_name() + " loses, recieves 0")
-        
-        input("END")
-
 
     def dealer_turn(self):
-        self.game.take_dealer_turn()
-        dealer_hand = self.game.get_dealer_full_hand_ascii()
+        self._game.take_dealer_turn()
+        dealer_hand = self._game.get_dealer_full_hand_ascii()
         print('\n'.join(dealer_hand))
 
 
@@ -65,7 +70,7 @@ class Display:
 
     def create_players(self):
         all_players = []
-        for x in range(self.num_players):
+        for x in range(self._num_players):
             name, bet = self.get_player_name_bet(x+1)
             all_players.append(Player(name, bet))
         return all_players
@@ -80,7 +85,7 @@ class Display:
         The user must press enter to continue, slows down the flow of the program so that 
         everything can be observed as appropriate
         """
-        input("**** PRESS ENTER TO CONTINUE ****")
+        input("**************")
 
     def get_number_input(self, message, min, max):
         invalid = True
@@ -146,18 +151,16 @@ class Display:
 
     # display player's cards
     def show_current_player_cards(self):
-        return '\n'.join(self.game.get_current_player().get_hand_ascii())
-
-    # display all players' cards
-    def show_all_players_cards(self):
-        pass
+        return '\n'.join(self._game.get_current_player_ascii())
 
     # display dealers' cards
     # may just be show_single_player_cards()?
 
     # get choice 'h', 's', 'd'
     def make_play_choice(self):
-        while not self.game.is_done(): # misses last iteration
+        valid = True
+        while valid:
+            print("########" + self._game.get_current_player_name().upper() + "'S TURN ########")
             self.show_player_details()
             finished = False
             while not finished:
@@ -167,29 +170,32 @@ class Display:
                     invalid = False
                     choice = input(">>").lower()
                     if choice in ["h", "s", "d"]:
-                        self.game.player_choice(choice)
+                        self._game.player_choice(choice)
                     else:
                         invalid = True
                 self.show_player_details()
-                finished = self.game.end_turn
-            self.game.set_next_player()
+                self.pause()
+                finished = self._game.get_turn_end()
+            valid = not(self._game.is_done())
+            if valid:
+                self._game.set_next_player()
 
 
     def show_player_name(self):
-        name = self.game.get_current_player().get_name()
+        name = self._game.get_current_player_name()
         return "Name: " + name
 
     def show_player_score(self):
-        score = self.game.get_current_player().get_hand_total()
+        score = self._game.get_current_player_total()
         return "Score: " + str(score)
     
     def show_player_bet(self):
-        bet = self.game.get_current_player().get_bet()
+        bet = self._game.get_current_player_bet()
         return "Bet: " + str(bet)
     
     def show_player_status(self):
         # can be playing, standing or bust
-        status = self.game.current_player_status()
+        status = self._game.current_player_status()
         return "******STATUS: " + status + " ******"
 
     def show_player_details(self):
@@ -209,7 +215,6 @@ class Display:
         print(bet)
         print(cards)
         print(status)
-        self.pause()
         
 
 

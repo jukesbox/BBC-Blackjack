@@ -37,6 +37,8 @@ class Deck:
         return all_cards
 
     def create_deck(self, cards_to_add=None):
+        # clear any current deck items.
+        self._card_stack.clear()
         if cards_to_add == None:
             cards_to_add = self.create_card_list()
         for card in self.shuffle_cards(cards_to_add):

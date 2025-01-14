@@ -50,7 +50,6 @@ class DisplayTestCase(unittest.TestCase):
         """
         player_name = self.display.get_player_name(0)
         self.assertEqual(player_name, "Player")
-        pass
 
     @patch("src.display.input", return_value="10")
     def test_get_player_bet(self, mock_input):
@@ -92,24 +91,98 @@ class DisplayTestCase(unittest.TestCase):
         """
         pass
 
-    def test_show_all_players_cards(self):
+    def test_show_player_name(self):
         """
-        The cards of all players can be shown in ascii format.
+        The player's name can be shown.
         """
-        pass
+        with patch.object(self.display._game, 'get_current_player_name', return_value="Player1"):
+            name = self.display.show_player_name()
+            self.assertEqual(name, "Name: Player1")
 
-    @patch("src.display.input", return_value="h")
-    def test_make_play_choice(self, mock_input):
+    @patch("src.display.input", return_value="")
+    def test_pause(self, mock_input):
         """
-        Given I enter 'h', 's' or 'd'...
-        The choice that was made is returned
+        The pause function should wait for user input.
         """
-        pass
+        self.display.pause()
+        mock_input.assert_called_once()
 
-    @patch("src.display.input", side_effect=["developer", " ", "s"])
-    def test_make_play_choice_invalid(self, mock_inputs):
+    @patch("src.display.input", return_value="3")
+    def test_get_number_input_valid(self, mock_input):
         """
-        Given I enter invalid response(s), the accepted
-        value is the first acceptable response that I enter.
+        Given I enter a valid number within the range, that number is returned.
         """
-        pass
+        number = self.display.get_number_input("Enter a number between 1 and 5:", 1, 5)
+        self.assertEqual(number, 3)
+
+    @patch("src.display.input", side_effect=["10", "0", "3"])
+    def test_get_number_input_invalid(self, mock_inputs):
+        """
+        Given I enter invalid response(s), the accepted value is the first acceptable response that I enter.
+        """
+        number = self.display.get_number_input("Enter a number between 1 and 5:", 1, 5)
+        self.assertEqual(number, 3)
+
+    def test_show_player_score(self):
+        """
+        The player's score can be shown.
+        """
+        with patch.object(self.display._game, 'get_current_player_total', return_value=21):
+            score = self.display.show_player_score()
+            self.assertEqual(score, "Score: 21")
+
+    def test_show_player_bet(self):
+        """
+        The player's bet can be shown.
+        """
+        with patch.object(self.display._game, 'get_current_player_bet', return_value=50):
+            bet = self.display.show_player_bet()
+            self.assertEqual(bet, "Bet: 50")
+
+    def test_show_player_status(self):
+        """
+        The player's status can be shown.
+        """
+        with patch.object(self.display._game, 'current_player_status', return_value="PLAYING"):
+            status = self.display.show_player_status()
+            self.assertEqual(status, "******STATUS: PLAYING ******")
+
+    def test_show_current_player_cards(self):
+        """
+        The player's cards can be shown in ascii art format.
+        """
+        with patch.object(self.display._game, 'get_current_player_ascii', 
+                          return_value=[" ______________ ",
+                                        "|2♠|3♠         |",
+                                        "|  |     ♠     |",
+                                        "|  |           |",
+                                        "|  |     ♠     |",
+                                        "|  |           |",
+                                        "|  |     ♠     |",
+                                        "|__|_________3♠|"]):
+            cards = self.display.show_current_player_cards()
+            self.assertEqual(cards, " ______________ \n|2♠|3♠         |\n|  |     ♠     |\n|  |           |\n|  |     ♠     |\n|  |           |\n|  |     ♠     |\n|__|_________3♠|")
+
+# I've tried really hard to get these tests to work but just cannot work out the issue!!!
+# Unfortunately I don't have much time left to dedicate to this project so it may not be fixed.
+    @patch('src.display.Display.pause', side_effect=['','','','',''])
+    @patch("src.display.Display.make_play_choice", return_value="h")    
+    def test_make_play_choice_hit(self, mock_input, mock_pause):
+        """
+        Given I enter 'h', the choice that was made is returned.
+        """
+        self.display.get_game().opening_hands()
+        with patch.object(self.display._game, 'player_choice') as mock_player_choice:
+            self.display.make_play_choice()
+            mock_player_choice.assert_called_with("h")
+
+    @patch('src.display.Display.pause', side_effect=['','','','',''])
+    @patch("src.display.Display.make_play_choice", side_effect=["", "developer", " ", "s"])
+    def test_make_play_choice_invalid(self, mock_inputs, mock_pause):
+        """
+        Given I enter invalid response(s), the accepted value is the first acceptable response that I enter.
+        """
+        self.display.get_game().opening_hands()
+        with patch.object(self.display._game, 'player_choice') as mock_player_choice:
+            self.display.make_play_choice()
+            mock_player_choice.assert_called_with("s")

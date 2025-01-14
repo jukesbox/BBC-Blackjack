@@ -20,16 +20,21 @@ class CardImagesTestCase(unittest.TestCase):
         pass
 
     def test_get_image_by_name(self):
-        pass
-
-    def test_get_image_by_name(self):
+        """
+        Given the card name is valid, the returned 
+        """
         card_name = "2_of_Hearts"
-        image = self.card_images.get_image_by_name(card_name)
-        self.assertIsNotNone(image)
-        self.assertIsInstance(image, list)
-        self.assertEqual(len(image), 8)
+        ascii_card = self.card_images.get_image_by_name(card_name)
+        self.assertIsNotNone(ascii_card)
+        self.assertIsInstance(ascii_card, list)
+        self.assertEqual(len(ascii_card), 8)
 
-    def test_get_partial_image_by_name(self):
+    def test_get_image_by_name_invalid(self):
+        card_name = "Invalid_Card"
+        with self.assertRaises(ValueError):
+            self.card_images.get_partial_image_by_name(card_name)
+
+    def test_get_partial_image_by_name_valid(self):
         card_name = "2_of_Hearts"
         partial_image = self.card_images.get_partial_image_by_name(card_name)
         self.assertIsNotNone(partial_image)
@@ -37,6 +42,11 @@ class CardImagesTestCase(unittest.TestCase):
         self.assertEqual(len(partial_image), 8)
         for line in partial_image:
             self.assertEqual(len(line), 3)
+
+    def test_get_partial_image_by_name_invalid(self):
+        card_name = "Invalid_Card"
+        with self.assertRaises(ValueError):
+            self.card_images.get_partial_image_by_name(card_name)
 
     def test_get_all_cards(self):
         self.assertEqual(len(self.card_images._card_dict), 52)

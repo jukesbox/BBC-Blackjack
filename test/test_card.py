@@ -5,8 +5,12 @@ Include getter/setters
 
 from src.card import Card
 import unittest
+from colorama import Fore, Back
 
 PATH = "src/images/"
+RED_SUIT = Fore.RED + Back.WHITE
+BLACK_SUIT = Fore.BLACK + Back.WHITE 
+DEFAULT = Fore.WHITE + Back.BLACK
 
 class CardTestCase(unittest.TestCase):
     def setUp(self):
@@ -86,3 +90,46 @@ class CardTestCase(unittest.TestCase):
         """ For an ace card, check that the default points value is 11"""
         this_card = Card("Ace", "Diamonds")
         self.assertEqual(this_card.get_card_value(), 11)
+
+    def test_get_ascii_art(self):
+        """
+        Given a card is instantiated, it has the correct ASCII art property.
+        """
+        self.card = Card("Ace", "Spades")
+        self.card.set_ascii_art()
+        self.assertIsNotNone(self.card.get_ascii_art())
+
+    def test_get_ascii_art_colourised(self):
+        """
+        Given a card is instantiated, it has the correct colourised ASCII art.
+        """
+        self.card = Card("Ace", "Spades")
+        self.card.set_ascii_art()
+        colourised_art = self.card.get_ascii_art_colourised()
+        self.assertTrue(all(line.startswith(BLACK_SUIT) for line in colourised_art))
+
+    def test_get_partial_ascii_art(self):
+        """
+        Given a card is instantiated, it has the correct partial ASCII art.
+        """
+        self.card = Card("Ace", "Spades")
+        self.card.set_ascii_art()
+        self.assertIsNotNone(self.card.get_partial_ascii_art())
+
+    def test_get_partial_ascii_art_colourised(self):
+        """
+        Given a card is instantiated, it has the correct colourised partial ASCII art.
+        """
+        self.card = Card("Ace", "Spades")
+        self.card.set_ascii_art()
+        colourised_partial_art = self.card.get_ascii_partial_colourised()
+        self.assertTrue(all(line.startswith(BLACK_SUIT) for line in colourised_partial_art))
+
+    def test_get_colour(self):
+        """
+        Given a card is instantiated, it has the correct colour property.
+        """
+        self.card = Card("Ace", "Hearts")
+        self.assertEqual(self.card.get_colour(), RED_SUIT)
+        self.card = Card("Ace", "Spades")
+        self.assertEqual(self.card.get_colour(), BLACK_SUIT)

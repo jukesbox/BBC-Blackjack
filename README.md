@@ -10,7 +10,7 @@ For this code, the following python libraries are required:
 -
 -
 
-# considerations
+# Considerations
 - I chose to continue with Python as it is a language I am very familiar with
 - giving option for betting or excluding entirely as an accessibilty consideration for personal/religious reasons
 
@@ -19,17 +19,24 @@ Functionality-based considerations:
 - Allowing multiple decks to be used - avoiding card-counting
 [to be added throughout development]
 
+# What have I learned?
 
-# references
+I find that I learn something every time I write code.
+Here, I have learned about printing in colour in the terminal with python, and also
+made my first ASCII art! 
+
+# References
 To consolidate my understanding of Blackjack's rules, I consulted:
-________
+https://www.mastersofgames.com/rules/blackjack-rules.htm
+and chose to implement the 'Double Down' rule which was not present in the guidance document.
 
 Python Implementation was mostly from my own previous knowledge, however supplemental research into 
-specific functionalities listed below was conducted from the following sources:
-____
-_____
+specific functionalities listed below were conducted using the listed sources:
+Python Terminal Colour Printing: https://pypi.org/project/colorama/
+python deque objects: https://docs.python.org/3/library/collections.html#collections.deque
+
 
 # Author
 
-Jamie Jukes
-University of Warwick
+Jamie Jukes - University of Warwick
+jamie.jukes2003@gmail.com

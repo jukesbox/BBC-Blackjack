@@ -13,7 +13,6 @@ class GameLogicTestCase(unittest.TestCase):
     def setUp(self):
         self.setup_players = [Player("Jamie", 10), Player("Software Developer", 20)]
         self._game = GameLogic(self.setup_players, 2)
-        pass
     
     def tearDown(self):
         pass
@@ -209,7 +208,41 @@ class GameLogicTestCase(unittest.TestCase):
 
     def test_set_turn_end(self):
         """
-        Sets the current player's turn to ended
+        Given the current player's turn is not set to ended, setting it will result in the 
+        turn being ended.
         """
-        pass
+        self.assertEqual(self._game.get_turn_end(), False) # should be false before any moves
+        self._game.set_turn_end()
+        self.assertEqual(self._game.get_turn_end(), True)
+
+    def test_get_turn_end(self):
+        """
+        Test that get_turn_end() returns False initially before any moves are made.
+        """
+        self.assertEqual(self._game.get_turn_end(), False)
+
+    def test_get_turn_end_after_hit(self):
+        """
+        Test that get_turn_end() returns True after the player hits and goes bust.
+        """
+        self._game.get_current_player().set_hand([Card("10", "Hearts"), 
+                                                    Card("10", "Diamonds"), 
+                                                    Card("Ace", "Spades")])
+        self._game.on_hit()
+        self.assertEqual(self._game.get_turn_end(), True)
+
+    def test_get_turn_end_after_stand(self):
+        """
+        Test that get_turn_end() returns True after the player stands.
+        """
+        self._game.on_stand()
+        self.assertEqual(self._game.get_turn_end(), True)
+
+    def test_get_turn_end_after_double_down(self):
+        """
+        Test that get_turn_end() returns True after the player doubles down.
+        """
+        self._game.on_double_down()
+        self.assertEqual(self._game.get_turn_end(), True)
+
 

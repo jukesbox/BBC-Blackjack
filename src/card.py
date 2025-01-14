@@ -7,10 +7,14 @@ accidentally outside of the class.
 
 """
 from src.card_images import CardImages
+from colorama import Fore, Back 
+
 
 SUITS = ["Diamonds", "Clubs", "Spades", "Hearts"]
 RANKS = ["Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"]
-
+RED_SUIT = Fore.RED + Back.WHITE
+BLACK_SUIT = Fore.BLACK + Back.WHITE 
+DEFAULT = Fore.WHITE + Back.BLACK
 ascii_art = CardImages()
 
 class Card:
@@ -33,6 +37,11 @@ class Card:
         self.set_name()
         self._ascii_art = None
         self.set_ascii_art()
+        self._colour = None
+        if self._suit in ["Hearts", "Diamonds"]:
+            self._colour = RED_SUIT
+        else:
+            self._colour = BLACK_SUIT
 
     def __str__(self):
         """
@@ -55,6 +64,18 @@ class Card:
         self._partial_ascii_art = ascii_art.get_partial_image_by_name(self._rank + "_of_" + self._suit)
 
 
+    def get_ascii_art_colourised(self):
+        new_lines = []
+        for line in self._ascii_art:
+            new_lines.append(self._colour + line + DEFAULT)
+        return new_lines
+    
+    def get_ascii_partial_colourised(self):
+        new_lines = []
+        for line in self._partial_ascii_art:
+            new_lines.append(self._colour + line + DEFAULT)
+        return new_lines
+
     def get_name(self):
         return self._name
     
@@ -68,6 +89,9 @@ class Card:
         if self._ascii_art:
             return self._ascii_art
         return None
+    
+    def get_colour(self):
+        return self._colour
     
     def get_partial_ascii_art(self):
         if self._partial_ascii_art:
