@@ -17,12 +17,11 @@ For this code, the following python libraries are required:
 
 Functionality-based considerations:
 - Allowing multiple decks to be used - avoiding card-counting
-[to be added throughout development]
 
 # What have I learned?
 
 I find that I learn something every time I write code.
-Here, I have learned about printing in colour in the terminal with python, and also
+Here, I have learned about printing in colour in the terminal with Python, and also
 made my first ASCII art! 
 
 # References
@@ -32,11 +31,7 @@ and chose to implement the 'Double Down' rule which was not present in the guida
 
 Python Implementation was mostly from my own previous knowledge, however supplemental research into 
 specific functionalities listed below were conducted using the listed sources:
-Python Terminal Colour Printing: https://pypi.org/project/colorama/
-python deque objects: https://docs.python.org/3/library/collections.html#collections.deque
+- Python Terminal Colour Printing: https://pypi.org/project/colorama/
+- Python deque objects: https://docs.python.org/3/library/collections.html#collections.deque
 
 
-# Author
-
-Jamie Jukes - University of Warwick
-jamie.jukes2003@gmail.com
