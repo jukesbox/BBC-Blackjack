@@ -13,12 +13,21 @@ from src.player import Player
 # path to card filenames
 PATH = "src/images/"
 
+
 class MainMenu():
+    """
+    The very first page that the user encounters, just has a continue button
+    """
     def __init__(self, parent):
         self.parent = parent
         self.show_screen()
 
     def show_screen(self):
+        """
+        Main menu screen - 
+        given more time would be centered with a nicer looking interface!
+
+        """
         self.box = Frame(self.parent)
         self.box.grid(row=0, column=0, columnspan=2, padx=10, pady=10)
         title = Label(self.box, text="BLACKJACK")
@@ -29,15 +38,23 @@ class MainMenu():
 
 
 class OptionsScreen():
+    """
+    On this page, the player selects the number of players, and the 
+    number of packs of cards to use for the deck 
+    """
     def __init__(self, parent):
         self.parent = parent
         self.num_players = StringVar()
         self.num_packs = StringVar()
+        # empty the screen before showing the options
         for widget in self.parent.winfo_children():
             widget.destroy()
         self.create_options()
 
     def create_options(self):
+        """
+        The input fields
+        """
         players_label = Label(self.parent, text = 'Number of players:', font=('calibre',10, 'bold'))
         players_entry = Scale(self.parent, from_=1, to=6, orient=HORIZONTAL, variable=self.num_players)
         players_label.grid()
@@ -51,19 +68,30 @@ class OptionsScreen():
         continue_button.grid()
 
     def game_setup(self):
+        """
+        On button in this screen pressed, setup with the main class, and 
+        move to the next menu
+        """
         self.parent.set_num_packs(int(self.num_players.get()), int(self.num_packs.get()))
 
 
 class PlayerNameBetScreen:
+    """
+    On this screen, the players pick their names and bet amounts
+    """
     def __init__(self, parent, num_players):
         self.parent = parent
         self.player_entries = []
         self.num_players = num_players
+        # destroy all other things on screen
         for widget in self.parent.winfo_children():
             widget.destroy()
         self.show_player_options()
 
     def show_player_options(self):
+        """
+        For each of the players, display input fields for their bet and name, with default values
+        """
         for i in range(self.num_players):
             # player name label
             # player name field
@@ -79,18 +107,28 @@ class PlayerNameBetScreen:
             player_bet_entry.set("10")
             player_bet_field = Entry(self.parent, textvariable=player_bet_entry)
             player_bet_field.grid(row=2*i, column=4)
-
             self.player_entries.append((player_name_entry, player_bet_entry))
 
         submit_button = Button(command=self.get_player_values, text="CONTINUE")
         submit_button.grid(row=2*self.num_players, column=0, columnspan=4)
 
     def show_error_message(self, index):
+        """
+        Show errors on the screen for erroneous bet inputs
+
+        Args:
+            index (int): the index of the player with incorrect info
+        """
         error = Label(self.parent, text="Bet must be a positive integer", foreground="red")
         error.grid(row=((index*2) + 1), column=4)
         pass
 
     def get_player_values(self):
+        """
+        Get input and determine if there are any errors. 
+        If there are, remain on the screen and display them,
+        else move to next menu.
+        """
         player_info, errors = self.validate_player_options()
         if errors != []:
             for index in errors:
@@ -104,14 +142,17 @@ class PlayerNameBetScreen:
         errors = []
         i = 0
         for player_name_entry, player_bet_entry in self.player_entries:
+            # get value of the entry
             name = player_name_entry.get()
             bet = player_bet_entry.get()
             player_options.append((name, bet))
             if name == "":
+                # set player name to default if empty
                 name = "Player"+ int(i+1)
             try:
                 bet = int(bet)
             except ValueError as e:
+                # add an eroor
                 errors.append(i)
             i+=1
         return (player_options, errors)
@@ -119,8 +160,18 @@ class PlayerNameBetScreen:
 
 
 class BlackjackApp(Tk):
+    """
+    The main class.
+
+    This does all of the display actions - instantiating the other classes for the menus
+    at the beginning.
+
+    This class is nowhere near as clean as I'd like it to be, 
+    but it is sort of a minimum-working GUI.
+    """
     def __init__(self):
         super().__init__()
+        # Makes the window
         self.title("Blackjack")
         self.width = 800
         self.height = 500
@@ -129,13 +180,27 @@ class BlackjackApp(Tk):
         # Set the current player index to 0 (start with the first player)
         self.menu = None
         self.player_options = None
+        # shows main menu
         self.titlescreen = MainMenu(self)
     
     def go_to_settings(self):
+        """
+        Called when the player presses start, moves to selecting number
+        of players and decks to use
+        """
         self.menu = OptionsScreen(self)
     
 
     def set_num_packs(self, num_players, num_packs):
+        """
+        Called when the number of packs and players 
+        have been selected, moves to selecting the names and bets
+        of each player.
+
+        Args:
+            num_players (int): the number of players 
+            num_packs (int): the number of packs
+        """
         self.num_packs = num_packs
         for widget in self.winfo_children():
             widget.destroy()
@@ -144,18 +209,25 @@ class BlackjackApp(Tk):
 
 
     def validated_players(self, player_list):
+        """
+        Called when the players have all entered valid name and bet values.
+
+        Args:
+            player_list [(str, int)]: list of tuples with name and bet
+        """
         # Initialize the game with the selected number of players
         for widget in self.winfo_children():
             widget.destroy()
         player_objs = []
         for name, bet in player_list:
             player_objs.append(Player(name, bet))
+        # initialise the game, with the players and number of packs
         self._game = GameLogic(player_objs, self.num_packs)
         self._game.opening_hands()  # Start the game
 
-        # Create frames for layout
+        # Create frames for layout with cards etc.
         self.create_widgets()
-
+        # update the ui, set scores/cards etc.
         self.update_ui()
 
     def create_widgets(self):
@@ -232,8 +304,6 @@ class BlackjackApp(Tk):
         # when the scrollbar is scrolled, move the canvas y-direction
         self.scrollbar = Scrollbar(self.scrollable_frame, orient="vertical", command=self.canvas.yview)
         self.canvas.configure(yscrollcommand=self.scrollbar.set)
-
-        # Holds the 
         self.scrollable_canvas_frame = Frame(self.canvas, bg="green")
 
         # Create window inside the canvas and set anchor to the right (anchor=E) and adjust position
@@ -257,12 +327,13 @@ class BlackjackApp(Tk):
 
     def update_dealer_cards(self):
         """Update the dealer's cards on the UI."""
-        self.dealer_card_frame.destroy()  # Destroy the old frame
-        self.dealer_card_frame = Label(self.dealer_full_frame, bd=0, width=100, height=100)
-        self.dealer_card_frame.grid(row=0, column=1, padx=20, pady=20)
-        dealer_cards_text = "\n".join([str(card.get_name()) for card in self._game.get_dealer().get_hand()])
+        for widget in self.dealer_card_frame.winfo_children():
+            widget.destroy()  # Clear the previous list of dealer's cards
+
+        # text based cards
+        dealer_cards_text = "\n".join([str(card.get_name()) for card in self._game.get_dealer().get_partial_hand()])
         self.dealer_label.config(text=f"Dealer's Cards:\n{dealer_cards_text}")
-        
+        # show dealer's cards graphically
         new_image_render = self.generate_stacked_cards(self._game.get_dealer_hand_files())
         image_label = Label(self.dealer_card_frame, image=new_image_render)
         image_label.image = new_image_render
@@ -351,18 +422,6 @@ class BlackjackApp(Tk):
 
             # Rendering
             return ImageTk.PhotoImage(new_image)
-    
-    def update_single_player(self):
-        pass
-
-    def show_bust(self):
-        pass
-
-    def on_finish_turn(self):
-        """
-        Remove turn ended banner, and reset the container with the next player.
-
-        """
 
     def on_hit(self):
         """Handle the 'Hit' action."""
@@ -374,13 +433,20 @@ class BlackjackApp(Tk):
             self.on_stand()  # If player busts, automatically stay
 
     def on_double(self):
+        """
+        Handle double down action
+        move to next player's turn 
+        """
         self._game.on_double_down() 
-        if self._game.is_done():
+        self.update_ui()
+        # if there are no
+        if not self._game.is_done():
             self.current_player_index += 1
             self._game.set_next_player()
-            self.update_ui()
+            # wat for user to see their final score
+            self.after(1000, self.update_ui())
         else:
-            self.dealer_turn()
+            self.after(1000, self.dealer_turn())
 
     def on_stand(self):
         """
@@ -388,7 +454,7 @@ class BlackjackApp(Tk):
         and go to next player
         """
         # Move to the next player or dealer's turn
-        if self.current_player_index < len(self._game.get_players()) - 1:
+        if not self._game.is_done():
             self.current_player_index += 1
             self._game.set_next_player()
             self.update_ui()

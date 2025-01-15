@@ -142,7 +142,7 @@ class Card:
         Returns:
             str: filename of card (for tkniter implementation)
         """
-        return self._rank + "_of_Hearts.png"
+        return self._rank + "_of_" +  self._suit + ".png"
         
 
 

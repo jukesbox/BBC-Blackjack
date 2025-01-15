@@ -257,6 +257,8 @@ class GameLogic:
         if total > 21:
             results.append("DEALER BUSTS!")
             total = 0
+        else:
+            results.append("Dealer SCORE: "+ str(total))
         for player in self._players:
             if player.player_wins(total):
                 results.append(player.get_name() + " wins with "+ str(player.get_hand_total()) +
@@ -265,4 +267,5 @@ class GameLogic:
                 results.append(player.get_name() + " loses with "+ str(player.get_hand_total()) +
                                " points, recieves 0")
         return results
+
 

@@ -186,5 +186,6 @@ class Dealer(Player):
         return self._revealed_hand[0].get_ascii_art_colourised()
 
     def take_turn(self, deck):
+        self._revealed_hand = self._hand
         if self.get_hand_total() < 17:
             self.hit(deck)

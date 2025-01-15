@@ -8,8 +8,9 @@ from src.display import Display
 from src.tkinter_ui import BlackjackApp
 
 if __name__ == "__main__":
-    graphical = True
-    if graphical:
+
+    graphical = input("Show GUI (y/n)? ")
+    if graphical == "y":
         app = BlackjackApp()
         app.mainloop()
     else:
