@@ -48,9 +48,13 @@ class Display:
         # gets all player choices for all players
         # after this, there are no more players to take their turns
         self.make_play_choice()
-        # while the dealer's total is < 17, keep taking a turn
+        # print dealer hand
+        print("############### DEALER TURN ###############")
+        dealer_hand = self._game.get_dealer_full_hand_ascii()
+        print('\n'.join(dealer_hand))
         while not self._game.game_done():
             self.dealer_turn()
+        
 
         print("############## GAME ENDED #################")
         for player in self._game.get_players():
@@ -75,7 +79,7 @@ class Display:
         print('\n'.join(dealer_hand))
         # print score and determine if bust
         total = self._game.get_dealer_total()
-        print("score:" + total)
+        print("score:" + str(total))
         if total > 21:
             print("############ DEALER BUST ###############")
 
@@ -120,7 +124,7 @@ class Display:
         The user must press enter to continue, slows down the flow of the program so that 
         everything can be observed as appropriate
         """
-        input("********************")
+        input("")
 
     def get_number_input(self, message, min, max):
         """

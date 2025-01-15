@@ -156,6 +156,7 @@ class CardImages:
                 suit = "Clubs"
             else:
                 suit = "Hearts"
+            ace = [line.strip("\n") for line in ace]
             # add to the dict
             self._card_dict["Ace_of_" + suit] = ace
             # first 3 chars of each line
