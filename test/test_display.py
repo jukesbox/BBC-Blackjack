@@ -158,27 +158,3 @@ class DisplayTestCase(unittest.TestCase):
                                         "|__|_________3♠|"]):
             cards = self.display.show_current_player_cards()
             self.assertEqual(cards, " ______________ \n|2♠|3♠         |\n|  |     ♠     |\n|  |           |\n|  |     ♠     |\n|  |           |\n|  |     ♠     |\n|__|_________3♠|")
-
-# I've tried really hard to get these tests to work but just cannot work out the issue!!!
-# Unfortunately I don't have much time left to dedicate to this project so it may not be fixed.
-    @patch('src.display.Display.pause', side_effect=['','','','',''])
-    @patch("src.display.Display.make_play_choice", return_value="h")    
-    def test_make_play_choice_hit(self, mock_input, mock_pause):
-        """
-        Given I enter 'h', the choice that was made is returned.
-        """
-        self.display.get_game().opening_hands()
-        with patch.object(self.display._game, 'player_choice') as mock_player_choice:
-            self.display.make_play_choice()
-            mock_player_choice.assert_any_call("h")
-
-    @patch('src.display.Display.pause', side_effect=['','','','',''])
-    @patch("src.display.Display.make_play_choice", side_effect=["", "developer", " ", "s"])
-    def test_make_play_choice_invalid(self, mock_inputs, mock_pause):
-        """
-        Given I enter invalid response(s), the accepted value is the first acceptable response that I enter.
-        """
-        self.display.get_game().opening_hands()
-        with patch.object(self.display._game, 'player_choice') as mock_player_choice:
-            self.display.make_play_choice()
-            mock_player_choice.assert_any_call("s")

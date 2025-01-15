@@ -247,5 +247,3 @@ class GameLogicTestCase(unittest.TestCase):
         """
         self._game.on_double_down()
         self.assertEqual(self._game.get_turn_end(), True)
-
-
