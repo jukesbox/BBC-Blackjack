@@ -1,8 +1,6 @@
 """
-This class will contain all necessary functions for displaying the game logic to the terminal.
-
-The main game logic is separated from this to ensure that additional implementations (such as a GUI) could be added
-without refactoring the rest of the code.
+This class contains all of the necessary functionality
+for displaying the game logic to the terminal.
 
 """
 from src.game_logic import GameLogic
@@ -128,8 +126,6 @@ class Display:
 
     def get_number_input(self, message, min, max):
         """
-        
-
         Args:
             message (str): The prompt to give
             min (int): the minimum accepted value

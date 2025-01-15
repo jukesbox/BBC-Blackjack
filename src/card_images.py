@@ -4,8 +4,6 @@ This class deals with the generation of ASCII art for displaying the cards in th
 The class should generate a dictionary of cards and their ascii art implementations, to be accessed
 by the Card class which will return the ASCII art to display it.
 
-
-
 Ascii art note:
 The file suit_exc_ace.txt contains the cards 2 to King of spades. The spade 'emoji's are swapped out
 to represent the appropriate suit when creating the ascii representation for cards of all suits.

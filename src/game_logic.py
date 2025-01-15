@@ -1,7 +1,9 @@
 """
-This class will contain the main game logic, such as determining what happens when "hit" is entered.
+This class contains the main logic for the game, and acts as a method of communication 
+between the display (tkinter or terminal-based) and the Player/Dealer/Deck etc.
 
-The players, deck and dealer will be instantiated inside this class, as all game logic should be performed here.
+This separation of concerns allows for additional interfaces such as a web-based 
+implementation to be added as an extension to the project.
 """
 from src.deck import Deck
 from src.player import Dealer

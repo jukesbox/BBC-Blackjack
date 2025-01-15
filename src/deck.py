@@ -1,4 +1,5 @@
 """
+This file contains the Deck class, which holds the cards that can be dealt to the players.
 
 """
 from collections import deque

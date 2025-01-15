@@ -1,7 +1,6 @@
 """
 The Player and Dealer class are defined in this file.
 
-
 The Dealer is a subclass of Player, as it shares some functionality but 
 has additional restrictions (such as having a minimum hand value)
 

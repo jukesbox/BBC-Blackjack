@@ -1,9 +1,11 @@
 """
-This is only a partially complete solution
+This is only a partially complete solution of the GUI - 
+It was added quite last minute from being a mock-up that I designed before 
+proper implementation, however I thought that it would be beneficial to show!
 
-There is significantly less documentation than I would like (and no unit tests)
-but I decided to include this work to demonstrate a working GUI.
-
+Unit tests for UI elements would be added if I had more time, but
+for now the functionality of the background game logic is confirmed 
+through unit tests.
 
 """
 from tkinter import *
@@ -148,7 +150,7 @@ class PlayerNameBetScreen:
             player_options.append((name, bet))
             if name == "":
                 # set player name to default if empty
-                name = "Player"+ int(i+1)
+                name = "Player"+ str(i+1)
             try:
                 bet = int(bet)
             except ValueError as e:
@@ -232,7 +234,8 @@ class BlackjackApp(Tk):
 
     def create_widgets(self):
         """
-        Create the necessary widgets for the main game section layout - populating with the dealer and players' info.
+        Create the necessary widgets for the main game section layout - populating 
+        with the dealer and players' info.
         """
         # configures the grid layout such that the row/grid 
         self.grid_rowconfigure(0, weight=1, uniform=True)
@@ -302,12 +305,14 @@ class BlackjackApp(Tk):
         # Canvas inside the scrollable frame
         self.canvas = Canvas(self.scrollable_frame, bg="green")
         # when the scrollbar is scrolled, move the canvas y-direction
-        self.scrollbar = Scrollbar(self.scrollable_frame, orient="vertical", command=self.canvas.yview)
+        self.scrollbar = Scrollbar(self.scrollable_frame, 
+                                   orient="vertical", command=self.canvas.yview)
         self.canvas.configure(yscrollcommand=self.scrollbar.set)
         self.scrollable_canvas_frame = Frame(self.canvas, bg="green")
 
         # Create window inside the canvas and set anchor to the right (anchor=E) and adjust position
-        self.canvas.create_window((0, 0), window=self.scrollable_canvas_frame, anchor=NW, width=self.scroll_width)
+        self.canvas.create_window((0, 0), window=self.scrollable_canvas_frame, 
+                                  anchor=NW, width=self.scroll_width)
 
         # pack in the frame
         self.scrollbar.pack(side=RIGHT, fill=Y)
@@ -331,7 +336,8 @@ class BlackjackApp(Tk):
             widget.destroy()  # Clear the previous list of dealer's cards
 
         # text based cards
-        dealer_cards_text = "\n".join([str(card.get_name()) for card in self._game.get_dealer().get_partial_hand()])
+        dealer_cards = self._game.get_dealer().get_partial_hand()
+        dealer_cards_text = "\n".join([str(card.get_name()) for card in dealer_cards])
         self.dealer_label.config(text=f"Dealer's Cards:\n{dealer_cards_text}")
         # show dealer's cards graphically
         new_image_render = self.generate_stacked_cards(self._game.get_dealer_hand_files())
@@ -378,7 +384,9 @@ class BlackjackApp(Tk):
             player_frame = Frame(self.scrollable_canvas_frame)
             player_frame.grid(row=i, column=0, padx=5, pady=5)
 
-            player_label = Label(player_frame, text=player.get_name() + ":\n" + "\n".join([str(card.get_name()) for card in player.get_hand()]))
+            cards = '\n'.join([str(card.get_name()) for card in player.get_hand()])
+            player_label = Label(player_frame, text=player.get_name() + 
+                                 ":\n" + cards)
             player_label.pack()
             new_image_render = self.generate_stacked_cards(player.get_hand_filenames())
             player_card_frame = LabelFrame(player_frame, bd=0, width=200, height=100)
@@ -411,7 +419,8 @@ class BlackjackApp(Tk):
             x_off, y_off = (0, 25)
 
             # Calculate window size
-            window_size = (card_resize_width + (num_cards - 1) * x_off, card_resize_height + (num_cards - 1) * y_off)
+            window_size = (card_resize_width + (num_cards - 1) * x_off, 
+                           card_resize_height + (num_cards - 1) * y_off)
 
             # Create blank image to put new card onto
             new_image = Image.new('RGB', (window_size), (255, 255, 255))
@@ -427,7 +436,6 @@ class BlackjackApp(Tk):
         """Handle the 'Hit' action."""
         self._game.on_hit()  # Update the player's state
         self.update_player_cards()  # Update the current player's cards 
-        self.update_single_player()        
         if self._game.get_current_player_total() > 21:
             self.show_bust()
             self.on_stand()  # If player busts, automatically stay
