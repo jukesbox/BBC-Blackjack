@@ -161,15 +161,31 @@ class GameLogic:
     
 
     def get_current_player_name(self):
+        """
+        Returns:
+            str: the current player's name
+        """
         return self.get_current_player().get_name()
 
     def get_current_player_total(self):
+        """
+        Returns:
+            int: the current player's hand total
+        """
         return self.get_current_player().get_hand_total()
 
     def get_current_player_bet(self):
+        """
+        Returns:
+            int: the current player's  bet
+        """
         return self.get_current_player().get_bet()
     
     def get_current_player_ascii(self):
+        """
+        Returns:
+            [str]: the current player's hand in ascii art format.
+        """
         return self.get_current_player().get_hand_ascii()
         
     
