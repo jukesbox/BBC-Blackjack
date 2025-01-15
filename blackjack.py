@@ -5,7 +5,13 @@ be added as an option here.
 """
 
 from src.display import Display
+from src.tkinter_ui import BlackjackApp
 
 if __name__ == "__main__":
-    display = Display()
-    display.begin_game()
+    graphical = True
+    if graphical:
+        app = BlackjackApp()
+        app.mainloop()
+    else:
+        display = Display()
+        display.begin_game()

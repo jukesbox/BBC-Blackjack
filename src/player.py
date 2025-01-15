@@ -154,6 +154,13 @@ class Player:
             if self._hand_total > dealer_score:
                 return True
         return False
+    
+    def get_hand_filenames(self):
+        filenames = []
+        for card in self._hand:
+            filenames.append(card.get_card_filename())
+        return filenames
+
 
 
 

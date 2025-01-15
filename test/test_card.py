@@ -128,3 +128,7 @@ class CardTestCase(unittest.TestCase):
         self.assertEqual(self.card.get_colour(), RED_SUIT)
         self.card = Card("Ace", "Spades")
         self.assertEqual(self.card.get_colour(), BLACK_SUIT)
+
+    def test_get_filename(self):
+        self.card = Card("Ace", "Hearts")
+        self.assertEqual(self.card.get_card_filename(), "Ace_of_Hearts.png")

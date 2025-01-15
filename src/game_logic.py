@@ -237,3 +237,32 @@ class GameLogic:
         """
         return self.end_turn
 
+    def get_dealer_hand_files(self):
+        """
+        Returns:
+            [str]: list of filenames for the cards in the dealer's hand
+        """
+        return self._dealer.get_hand_filenames()
+    
+    def get_winners(self):
+        """
+        Returns strings to display about the winners of the game (GUI version)
+
+        Returns:
+            [str]: List of strings
+        """
+        results = []
+        total = self.get_dealer_total()
+        # set dealer total to 0 if bust
+        if total > 21:
+            results.append("DEALER BUSTS!")
+            total = 0
+        for player in self._players:
+            if player.player_wins(total):
+                results.append(player.get_name() + " wins with "+ str(player.get_hand_total()) +
+                               " points, recieves "+ str(player.get_bet()*2))
+            else:
+                results.append(player.get_name() + " loses with "+ str(player.get_hand_total()) +
+                               " points, recieves 0")
+        return results
+

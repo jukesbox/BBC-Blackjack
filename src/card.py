@@ -137,6 +137,13 @@ class Card:
         else:
             return int(self._rank)
         
+    def get_card_filename(self):
+        """
+        Returns:
+            str: filename of card (for tkniter implementation)
+        """
+        return self._rank + "_of_Hearts.png"
+        
 
 
 
