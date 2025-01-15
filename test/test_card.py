@@ -7,7 +7,7 @@ from src.card import Card
 import unittest
 from colorama import Fore, Back
 
-PATH = "src/images/"
+# for printing colours to the terminal
 RED_SUIT = Fore.RED + Back.WHITE
 BLACK_SUIT = Fore.BLACK + Back.WHITE 
 DEFAULT = Fore.WHITE + Back.BLACK
@@ -70,11 +70,6 @@ class CardTestCase(unittest.TestCase):
         """
         self.card = Card("4", "Hearts")
         self.assertEqual(self.card.get_suit(), "Hearts")
-
-    def test_get_ascii_art(self):
-        ### TODO: Write test
-        pass
-
 
     def test_get_card_value_num(self):
         """ For a number card, test that the points value of the card matches """

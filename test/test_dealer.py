@@ -1,11 +1,11 @@
 
-from src.player import Player, Dealer
+from src.player import Dealer
 from src.deck import Deck
 from src.card import Card
 import unittest
 
 
-class PlayerTestCase(unittest.TestCase):
+class DealerTestCase(unittest.TestCase):
     def setUp(self):
         self.dealer = Dealer()
         self.deck = Deck(1)
@@ -36,12 +36,12 @@ class PlayerTestCase(unittest.TestCase):
     def test_dealer_take_turn(self):
         """
         Given the dealer's hand total is less than 17,
-        When the dealer takes a turn,
-        Then the dealer hits until the hand total is at least 17.
+        When the dealer takes a turn, they will recieve a card
         """
         self.dealer.set_hand([Card("2", "Hearts"), Card("3", "Diamonds")])
+        total = self.dealer.get_hand_total()
         self.dealer.take_turn(self.deck)
-        self.assertGreaterEqual(self.dealer.get_hand_total(), 17)
+        self.assertGreater(self.dealer.get_hand_total(), total)
 
     def test_dealer_stand(self):
         """

@@ -6,17 +6,24 @@ Welcome to my implementation of Blackjack :)
 I decided to extend the given task to be a terminal-based fully playable game of blackjack.
 
 # Setup
+To run the tests: In the same folder as this README, run 'python3 -m unittest discover test"
+To run the program: In the same folder as this README run 'python3 blackjack.py'
+
+
 For this code, the following python libraries are required:
--
--
+- colorama
+- collections (deque)
+- unittest
 
-# Considerations
-- I chose to continue with Python as it is a language I am very familiar with
-- giving option for betting or excluding entirely as an accessibilty consideration for personal/religious reasons
+To install any that may be missing from your system, use 'pip install [package]'
 
-
-Functionality-based considerations:
-- Allowing multiple decks to be used - avoiding card-counting
+# Design Considerations
+- Separation of concerns between the IO/User Interface and the game logic allows
+for further implementations to build upon the GameLogic (e.g. with a Tkinter GUI) 
+without messing with the actual game logic too much.
+- Testing - unit tests were created for each function in the program to ensure that everything
+returned expected values/types etc. This also helped to make lots of small functions with one 
+purpose - rather than huge sprawling functions that are incomprehensible (mostly)
 
 # What have I learned?
 
@@ -25,11 +32,11 @@ Here, I have learned about printing in colour in the terminal with Python, and a
 made my first ASCII art! 
 
 # References
-To consolidate my understanding of Blackjack's rules, I consulted:
-https://www.mastersofgames.com/rules/blackjack-rules.htm
-and chose to implement the 'Double Down' rule which was not present in the guidance document.
+To consolidate my understanding of Blackjack's rules, I consulted:\
+https://www.mastersofgames.com/rules/blackjack-rules.htm\
+and chose to implement the 'Double Down' rule which was not present in the guidance document.\
 
-Python Implementation was mostly from my own previous knowledge, however supplemental research into 
+This Python Implementation was mostly from my own previous knowledge, however supplemental research into 
 specific functionalities listed below were conducted using the listed sources:
 - Python Terminal Colour Printing: https://pypi.org/project/colorama/
 - Python deque objects: https://docs.python.org/3/library/collections.html#collections.deque

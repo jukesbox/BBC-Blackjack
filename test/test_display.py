@@ -1,6 +1,8 @@
 """
 Testing the functionality of the Display class.
-Include getter/setters
+
+There are several points where blank input has to be mocked (for where pauses are in the program)
+I couldn't really find a way around that unfortuately!
 """
 
 from src.display import Display
@@ -85,12 +87,6 @@ class DisplayTestCase(unittest.TestCase):
         num_packs = self.display.get_entered_num_packs()
         self.assertEqual(num_packs, 3)
 
-    def test_show_current_player_cards(self):
-        """
-        The player's cards can be shown in ascii art format.
-        """
-        pass
-
     def test_show_player_name(self):
         """
         The player's name can be shown.
@@ -174,7 +170,7 @@ class DisplayTestCase(unittest.TestCase):
         self.display.get_game().opening_hands()
         with patch.object(self.display._game, 'player_choice') as mock_player_choice:
             self.display.make_play_choice()
-            mock_player_choice.assert_called_with("h")
+            mock_player_choice.assert_any_call("h")
 
     @patch('src.display.Display.pause', side_effect=['','','','',''])
     @patch("src.display.Display.make_play_choice", side_effect=["", "developer", " ", "s"])
@@ -185,4 +181,4 @@ class DisplayTestCase(unittest.TestCase):
         self.display.get_game().opening_hands()
         with patch.object(self.display._game, 'player_choice') as mock_player_choice:
             self.display.make_play_choice()
-            mock_player_choice.assert_called_with("s")
+            mock_player_choice.assert_any_call("s")

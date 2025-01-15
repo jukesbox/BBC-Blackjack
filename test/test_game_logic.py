@@ -144,7 +144,10 @@ class GameLogicTestCase(unittest.TestCase):
             choice (str):  The choice (from 'hit', 'stand', 'double down') that the 
                             current player chose. 
         """
-        pass
+        with patch.object(self._game, 'on_hit') as hit:
+            self._game.player_choice('h')
+            hit.assert_called()
+
     
     def test_current_player_status_play(self):
         """
